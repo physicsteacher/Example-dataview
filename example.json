@@ -1,0 +1,159 @@
+{
+	"application": {
+
+		"title": "NLCC MJ Miller",
+
+		"theme": "bootswatch-paper",
+
+		"use_collection2": false,
+
+		"collections": [
+			{
+				"name": "cadets",
+				"fields": [
+					{ "name": "rank", "title": "Rank", "input": "select", "input_items": ["NE", "OC"], "required": false, "exportable": true },
+					{ "name": "name", "title": "Name", "required": true, "exportable": true },
+					{ "name": "phone", "title": "Phone", "default": "-", "exportable": true },
+					{ "name": "email", "title": "E-mail", "type": "email", "exportable": true },
+					{ "name": "Address", "title": "Address", "input": "textarea", "exportable": true },
+					{ "name": "tos", "title": "TOS", "type": "date", "input": "datepicker", "exportable": true },
+					{ "name": "dob", "title": "DOB", "type": "date", "input": "datepicker", "exportable": true}
+				]
+			}
+		],
+
+		"queries": [
+			{
+				"name": "cadets",
+				"collection": "cadets",
+				"filter": {}
+			},
+			{
+				"name": "cadets_empty",
+				"collection": "cadets",
+				"filter": {"_id": null},
+				"find_one": true
+			},
+			{
+				"name": "cadet",
+				"collection": "cadets",
+				"filter": { "_id": ":cadetId" },
+				"find_one": true
+			}
+		],
+
+		"free_zone": {
+
+			"components": [
+				{
+					"name": "main_menu",
+					"type": "menu",
+					"items": [
+						{ "title": "Home page", "route": "home" },
+						{ "title": "Cadets", "route": "cadets" }
+					]
+				}
+			],
+
+			"pages": [
+				{
+					"name": "home",
+					"title": "",
+					"components": [
+						{
+							"name": "home_jumbotron",
+							"title": "Example application",
+							"type": "jumbotron",
+							"text": "<b>This <a href=\"https://www.meteor.com\" target=\"_blank\">Meteor</a> application is made with <a href=\"http://www.meteorkitchen.com\" target=\"_blank\">meteor-kitchen</a> without manual coding.</b><br />It demonstrates how to use DataView and Form components to create simple database application with view, search, insert, edit and delete functions.<br />Source code (input file for generator) is <a href=\"https://github.com/perak/kitchen-examples/tree/master/example-dataview\" target=\"_blank\">here</a>.",
+							"button_title": "Continue &raquo;",
+							"button_route": "cadets"
+						}
+					]
+				},
+				{
+					"name": "cadets",
+					"components": [
+						{
+							"name": "view",
+							"type": "data_view",
+							"title": "Cadets",
+							"views": [
+								"list"
+							],
+							"text_if_empty": "No cadets :(",
+
+							"query_name": "cadets",
+							"query_params": [],
+
+							"insert_route": "cadets.insert",
+							"edit_route": "cadets.edit",
+							"edit_route_params": [
+								{ "name": "cadetId", "value": "this._id" }
+							],
+							"details_route": "cadets.details",
+							"details_route_params": [
+								{ "name": "cadetId", "value": "this._id" }
+							]
+						}
+					],
+					"pages": [
+						{
+							"name": "insert",
+							"components": [
+								{
+									"name": "insert_form",
+									"type": "form",
+									"mode": "insert",
+									"title": "New cadet",
+
+									"query_name": "cadets_empty",
+									"query_params": [],
+
+									"submit_route": "cadets",
+									"cancel_route": "cadets"
+								}
+							]
+						},
+						{
+							"name": "details",
+							"route_params": ["cadetId"],
+							"components": [
+								{
+									"name": "details_form",
+									"type": "form",
+									"mode": "read_only",
+									"title": "Details",
+									"layout": "horizontal",
+
+									"query_name": "cadet",
+									"query_params": [],
+
+									"close_route": "cadets",
+									"back_route": "cadets"
+								}
+							]
+						},
+
+						{
+							"name": "edit",
+							"route_params": ["cadetId"],
+							"components": [
+								{
+									"name": "edit_form",
+									"type": "form",
+									"mode": "update",
+									"title": "Edit cadet",
+									"submit_route": "cadets",
+									"cancel_route": "cadets",
+
+									"query_name": "cadet",
+									"query_params": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	}
+}
